@@ -1,0 +1,292 @@
+/* Nebula Lab 2.0 - Digital Glass Design System */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ==================== 1. Core Variables ==================== */
+:root {
+    --glass-blur: blur(16px);
+    --glass-bg-default: rgba(255, 255, 255, 0.4);
+    --glass-bg-hover: rgba(255, 255, 255, 0.6);
+    --glass-bg-active: rgba(235, 245, 255, 0.55);
+
+    --glass-border-default: rgba(255, 255, 255, 0.5);
+    --glass-border-active: rgba(46, 134, 193, 0.3);
+
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.03);
+    --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.06);
+    --glow-primary: 0 0 20px rgba(46, 134, 193, 0.15);
+
+    --color-emerald: #10B981;
+    --color-sapphire: #2E86C1;
+    --color-amethyst: #9B59B6;
+    --text-primary: #1F2937;
+    --text-secondary: #6B7280;
+
+    --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==================== 2. Global Resets ==================== */
+html,
+body,
+[class*="css"] {
+    font-family: 'Inter', -apple-system, sans-serif !important;
+    color: var(--text-primary) !important;
+}
+
+div[data-testid="stDecoration"],
+.stDeployButton,
+[data-testid="stDeployButton"] {
+    display: none !important;
+}
+
+/* 侧边栏背景 */
+section[data-testid="stSidebar"] {
+    background-color: #FAFAFA !important;
+}
+
+/* 导航标题美化 */
+section[data-testid="stSidebar"] h3 {
+    font-size: 1.0rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    color: #4B5563 !important;
+    margin-bottom: 20px !important;
+    font-weight: 800 !important;
+    padding-left: 5px !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ==================== 3. Glass Cards (Strict Selector Fix) ==================== */
+
+/* 关键修复：只选中 role="radiogroup" 内部的 label，避开最顶层的 Widget label */
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    position: relative !important;
+
+    width: 100% !important;
+    min-height: 72px !important;
+    padding: 12px 20px 12px 24px !important;
+    margin-bottom: 12px !important;
+
+    background: var(--glass-bg-default) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    border: 1px solid var(--glass-border-default) !important;
+    border-radius: 16px !important;
+    box-shadow: var(--shadow-card) !important;
+
+    transition: all 0.4s var(--ease-smooth) !important;
+    cursor: pointer !important;
+    overflow: hidden !important;
+}
+
+/* 隐藏原生 Radio 圆圈 */
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label>div:first-child {
+    display: none !important;
+}
+
+/* Hover 效果 */
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:hover {
+    transform: translateY(-2px) scale(1.01) !important;
+    background: var(--glass-bg-hover) !important;
+    box-shadow: var(--shadow-hover) !important;
+    border-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* ==================== 4. Active State (Multi-Selector Robustness) ==================== */
+/* 使用多种选择器确保命中：input:checked 或 aria-checked */
+
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:has(input:checked),
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:has(div[aria-checked="true"]) {
+    background: var(--glass-bg-active) !important;
+    border-color: var(--glass-border-active) !important;
+    box-shadow: var(--glow-primary), var(--shadow-card) !important;
+    transform: translateX(4px) !important;
+}
+
+/* ==================== 5. Information & Typography ==================== */
+
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label p {
+    font-size: 1.0rem !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    margin: 0 !important;
+    line-height: 1.4 !important;
+    z-index: 2 !important;
+    transition: color 0.3s ease;
+}
+
+/* 选中文字变色 */
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:has(input:checked) p,
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:has(div[aria-checked="true"]) p {
+    color: var(--color-sapphire) !important;
+    font-weight: 700 !important;
+}
+
+/* 副标题 (Pseudo-elements) */
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:nth-of-type(1) p::after {
+    content: "Data Import & Cleaning";
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+    margin-top: 2px;
+    opacity: 0.8;
+}
+
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:nth-of-type(2) p::after {
+    content: "Multi-Sample Plotting";
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+    margin-top: 2px;
+    opacity: 0.8;
+}
+
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:nth-of-type(3) p::after {
+    content: "Deep Insight Copilot";
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+    margin-top: 2px;
+    opacity: 0.8;
+}
+
+/* 选中副标题变色 */
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:has(input:checked) p::after,
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:has(div[aria-checked="true"]) p::after {
+    color: var(--color-sapphire) !important;
+    opacity: 1 !important;
+}
+
+/* ==================== 6. Indicators (Fluid Bar & Dot) ==================== */
+
+/* Bar Base */
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 0%;
+    background-color: var(--color-sapphire);
+    border-radius: 4px;
+    transition: height 0.4s var(--ease-elastic), background-color 0.3s ease;
+}
+
+/* Bar Grow */
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:has(input:checked)::before,
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:has(div[aria-checked="true"])::before {
+    height: 40% !important;
+}
+
+/* Dot Base */
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label::after {
+    content: "";
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #E5E7EB;
+    transition: all 0.3s ease;
+}
+
+/* Dot Active */
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:has(input:checked)::after,
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:has(div[aria-checked="true"])::after {
+    background-color: var(--color-sapphire);
+    box-shadow: 0 0 10px var(--color-sapphire);
+}
+
+/* Colors Per Item */
+/* Item 1 Emerald */
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:nth-of-type(1):has(input:checked)::before,
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:nth-of-type(1):has(div[aria-checked="true"])::before {
+    background-color: var(--color-emerald) !important;
+}
+
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:nth-of-type(1):has(input:checked)::after,
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:nth-of-type(1):has(div[aria-checked="true"])::after {
+    background-color: var(--color-emerald) !important;
+    box-shadow: 0 0 10px var(--color-emerald);
+}
+
+/* Item 3 Amethyst */
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:nth-of-type(3):has(input:checked)::before,
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:nth-of-type(3):has(div[aria-checked="true"])::before {
+    background-color: var(--color-amethyst) !important;
+}
+
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:nth-of-type(3):has(input:checked)::after,
+section[data-testid="stSidebar"] [data-testid="stRadio"] [role="radiogroup"] label:nth-of-type(3):has(div[aria-checked="true"])::after {
+    background-color: var(--color-amethyst) !important;
+    box-shadow: 0 0 10px var(--color-amethyst);
+}
+
+/* ==================== 7. AI Chat Output Enhancements ==================== */
+
+/* 表格样式美化 */
+div[data-testid="stChatMessage"] table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 16px 0 !important;
+    font-size: 0.9em !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+div[data-testid="stChatMessage"] th {
+    background-color: #F3F4F6 !important;
+    color: #374151 !important;
+    font-weight: 600 !important;
+    padding: 10px 16px !important;
+    text-align: left !important;
+    border-bottom: 2px solid #E5E7EB !important;
+}
+
+div[data-testid="stChatMessage"] td {
+    padding: 8px 16px !important;
+    border-bottom: 1px solid #F3F4F6 !important;
+    color: #4B5563 !important;
+}
+
+div[data-testid="stChatMessage"] tr:last-child td {
+    border-bottom: none !important;
+}
+
+div[data-testid="stChatMessage"] tr:hover {
+    background-color: #F9FAFB !important;
+}
+
+/* 数学公式优化 */
+div[data-testid="stChatMessage"] .katex {
+    font-size: 1.1em !important;
+    color: #111827 !important;
+    padding: 0 4px;
+}
+
+div[data-testid="stChatMessage"] pre {
+    border-radius: 8px !important;
+    border: 1px solid #E5E7EB !important;
+    background-color: #F9FAFB !important;
+}
+
+/* 消息气泡微调 */
+div[data-testid="stChatMessage"] {
+    padding: 1rem !important;
+    border-radius: 12px !important;
+    transition: background-color 0.2s;
+}
+
+div[data-testid="stChatMessage"]:hover {
+    background-color: rgba(243, 244, 246, 0.4);
+}

@@ -1,0 +1,41 @@
+{
+  "name": "热重",
+  "created_at": "2026-02-18T21:31:09.502871",
+  "file_type": "txt",
+  "header_row": 0,
+  "use_header": true,
+  "skip_rows": 0,
+  "delimiter": ",",
+  "sheet_name": 0,
+  "encoding": "gbk",
+  "columns": {
+    "未减的重量": {
+      "original_name": "未减的重量",
+      "alias": null,
+      "keep": true
+    },
+    "样品温度": {
+      "original_name": "样品温度",
+      "alias": null,
+      "keep": true
+    }
+  },
+  "transformations": [
+    {
+      "column": "未减的重量",
+      "operation": "/",
+      "value": "__COL_FIRST__"
+    },
+    {
+      "column": "未减的重量",
+      "operation": "*",
+      "value": 100.0
+    },
+    {
+      "column": "未减的重量",
+      "operation": "*",
+      "value": 1.0
+    }
+  ],
+  "description": ""
+}

@@ -1,0 +1,6 @@
+[client]
+showSidebarNavigation = false
+toolbarMode = "minimal" # Shows 3-dots (safe), hides other junk
+
+[theme]
+base = "light"
